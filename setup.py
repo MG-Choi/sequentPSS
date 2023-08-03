@@ -2,13 +2,13 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'sequentPSS',
-    version = '0.0.2',
+    version = '0.0.3',
     description = "algorithm for sequential parameter searching with GSA",
     url = 'https://github.com/MG-Choi/sequentPSS',
     author = 'MoongiChoi',
     author_email = 'u1316663@utah.edu',
     packages = find_packages(),
-    package_data = {'sequentPSS': ['sampleData/concatenated_df.csv', 'sampleData/O1.txt', 'sampleData/O2.txt', 'sampleData/O3.txt' ]},
+    package_data = {'sequentPSS': ['sampleData/concatenated_df.csv', 'sampleData/O1.txt', 'sampleData/O2.txt', 'sampleData/O3.txt']},
     include_package_data = True,
     install_requires = ['numpy==1.24.3', 'pandas==1.5.3', 'random2==1.0.1']
 )
