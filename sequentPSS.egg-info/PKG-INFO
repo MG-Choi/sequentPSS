@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: sequentPSS
-Version: 0.0.4
+Version: 0.0.5
 Summary: algorithm for sequential parameter searching with GSA
 Home-page: https://github.com/MG-Choi/sequentPSS
 Author: MoongiChoi

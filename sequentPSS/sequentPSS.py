@@ -21,7 +21,7 @@ from SALib.analyze import delta
 
 # ## data
 
-# In[52]:
+# In[225]:
 
 
 # change path to relative path - only for publishing
@@ -40,18 +40,18 @@ O3 = sorted(np.loadtxt(oPath + "O3.txt"))
 
 # ## simulation code
 
-# In[53]:
+# In[226]:
 
 
-def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
+def simple_Simulation(x1: 'int', x2: 'int', x3: 'int', n = 10):
     '''
     to make simple simulation
     
     Parameters
     ----------
-    p1 : parameter 1. range: 1 to 5
-    p2 : parameter 2. range: 1 to 5
-    p3 : parameter 3. range: 1 to 5
+    x1 : parameter 1. range: 1 to 5
+    x2 : parameter 2. range: 1 to 5
+    x3 : parameter 3. range: 1 to 5
     n : the number of simulation runs
 
     Returns
@@ -62,13 +62,13 @@ def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
 
     Examples
     --------
-    >>> simple_Simulation(p1 = 1, p2 = 3, p3 = 2, n = 11)
+    >>> simple_Simulation(x1 = 1, x2 = 3, x3 = 2, n = 11)
     '''
     
     global simul_data # globally declare
    
     # select data
-    condition = (simul_data['p1'] == p1) & (simul_data['p2'] == p2) & (simul_data['p3'] == p3)
+    condition = (simul_data['x1'] == x1) & (simul_data['x2'] == x2) & (simul_data['x3'] == x3)
     filtered_df = simul_data[condition]
     
     dfs = []
@@ -79,9 +79,9 @@ def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
     
         # now make new simulation data
         new_data = {
-            'p1': [chosen_df['p1'].iloc[0]],
-            'p2': [chosen_df['p2'].iloc[0]],
-            'p3': [chosen_df['p3'].iloc[0]],
+            'x1': [chosen_df['x1'].iloc[0]],
+            'x2': [chosen_df['x2'].iloc[0]],
+            'x3': [chosen_df['x3'].iloc[0]],
             'y1': [sorted(chosen_df['y1'].tolist())],
             'y2': [sorted(chosen_df['y2'].tolist())],
             'y3': [sorted(chosen_df['y3'].tolist())]
@@ -108,20 +108,20 @@ def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
 
 # ## 1) preprocessing (1) - Determine a criterions for calibration
 
-# In[54]:
+# In[228]:
 
 
 # run multiple simulations
 
-def multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 3):
+def multiple_simple_simulation(x1_list, x2_list, x3_list, M = 150, u = 0.1, k = 3):
     '''
     to make simple simulation results df by multiple parameters
     
     Parameters
     ----------
-    p1: parameter 1. range: 1 to 5
-    p2: parameter 2. range: 1 to 5
-    p3: parameter 3. range: 1 to 5
+    x1: parameter 1. range: 1 to 5
+    x2: parameter 2. range: 1 to 5
+    x3: parameter 3. range: 1 to 5
     M: MonteCarlo index (default:100, too low:low accuracy, too high:computational intensity) 
     u = leniency index (default:0.1, too low:overfit, too high:uncertainty)
     k = the number of parameters (3)
@@ -134,7 +134,7 @@ def multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 
 
     Examples
     --------
-    >>> multi_simul_df = multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 3)
+    >>> multi_simul_df = multiple_simple_simulation(x1_list, x2_list, x3_list, M = 150, u = 0.1, k = 3)
     '''    
     
     global simple_Simulation
@@ -144,12 +144,12 @@ def multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 
     
     for i in range(M*(2*k + 2)): #1200 times
         # set parameter space
-        p_1 = random2.choice(p1_list)
-        p_2 = random2.choice(p2_list)
-        p_3 = random2.choice(p3_list)
+        x_1 = random2.choice(x1_list)
+        x_2 = random2.choice(x2_list)
+        x_3 = random2.choice(x3_list)
 
         # run model and save
-        tem_prep1_data = simple_Simulation(p1 = p_1, p2 = p_2, p3 = p_3, n = 1)
+        tem_prep1_data = simple_Simulation(x1 = x_1, x2 = x_2, x3 = x_3, n = 1)
 
         # append temporal result to list
         prep1_dfs.append(tem_prep1_data)
@@ -159,7 +159,7 @@ def multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 
     return result_df
 
 
-# In[55]:
+# In[229]:
 
 
 # Preprocessing (1): determining a criterion for calibration
@@ -199,7 +199,7 @@ def prep1_criterion(O_list, multi_simul_df, u, k):
 
 
     # --- add combinations of y ---
-    comb_columns = [col for col in multi_simul_df_temp.columns if col.startswith('p')] # if the comlumn name starts with p
+    comb_columns = [col for col in multi_simul_df_temp.columns if col.startswith('x')] # if the comlumn name starts with x
     multi_simul_df_temp['comb'] = multi_simul_df_temp[comb_columns].apply(lambda row: list(row), axis=1)
 
     
@@ -250,7 +250,7 @@ def prep1_criterion(O_list, multi_simul_df, u, k):
 
 # ## 2) preprocessing (2) - Sorting Y and X
 
-# In[206]:
+# In[230]:
 
 
 def sorting_Y(multi_simul_df_rmse_sel):
@@ -300,7 +300,7 @@ def sorting_Y(multi_simul_df_rmse_sel):
     return result_df
 
 
-# In[221]:
+# In[231]:
 
 
 def sorting_X(problem: dict, multi_simul_df_rmse_sel, GSA = 'RBD-FAST'):
@@ -357,7 +357,6 @@ def sorting_X(problem: dict, multi_simul_df_rmse_sel, GSA = 'RBD-FAST'):
     
     
     return si_df
-
 
 
 
