@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[75]:
+# In[51]:
 
 
 import numpy as np
@@ -10,9 +10,18 @@ import random2
 import os #os의 경우 기본적으로 주어지기 때문에 setup.py에 하지 않는다.
 
 
+# In[188]:
+
+
+from SALib.analyze import sobol
+from SALib.analyze import fast
+from SALib.analyze import rbd_fast
+from SALib.analyze import delta
+
+
 # ## data
 
-# In[129]:
+# In[52]:
 
 
 # change path to relative path - only for publishing
@@ -31,7 +40,7 @@ O3 = sorted(np.loadtxt(oPath + "O3.txt"))
 
 # ## simulation code
 
-# In[103]:
+# In[53]:
 
 
 def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
@@ -99,7 +108,7 @@ def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
 
 # ## 1) preprocessing (1) - Determine a criterions for calibration
 
-# In[150]:
+# In[54]:
 
 
 # run multiple simulations
@@ -150,7 +159,7 @@ def multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 
     return result_df
 
 
-# In[207]:
+# In[55]:
 
 
 # Preprocessing (1): determining a criterion for calibration
@@ -163,8 +172,8 @@ def prep1_criterion(O_list, multi_simul_df, u, k):
     
     Parameters
     ----------
-    O_list: 
-    multi_simul_df:
+    O_list: list that includes observed data
+    multi_simul_df: result of multiple simulation
     u: leniency index (default:0.1, too low:overfit, too high:uncertainty)
     k: the number of parameters (3)
     
@@ -179,8 +188,10 @@ def prep1_criterion(O_list, multi_simul_df, u, k):
 
     Examples
     --------
-    >>> 
+    >>> rmse_sel_df, multi_simul_df = prep1_criterion(O_list, multi_simul_df, u, k) 
     '''        
+    
+    multi_simul_df_temp = multi_simul_df.copy()
     
     # --- func for RMSE calculation ---
     def rmse(actual, predicted):
@@ -188,33 +199,33 @@ def prep1_criterion(O_list, multi_simul_df, u, k):
 
 
     # --- add combinations of y ---
-    comb_columns = [col for col in multi_simul_df.columns if col.startswith('p')] # if the comlumn name starts with p
-    multi_simul_df['comb'] = multi_simul_df[comb_columns].apply(lambda row: list(row), axis=1)
+    comb_columns = [col for col in multi_simul_df_temp.columns if col.startswith('p')] # if the comlumn name starts with p
+    multi_simul_df_temp['comb'] = multi_simul_df_temp[comb_columns].apply(lambda row: list(row), axis=1)
 
     
     # --- add new columns of rmse between y columns and O_list ---
-    for i, col in enumerate(multi_simul_df.columns):
+    for i, col in enumerate(multi_simul_df_temp.columns):
         if col.startswith('y'):
             col_name = 'rmse_O' + col[1:]
             # print(col[1:])
-            multi_simul_df[col_name] = multi_simul_df[col].apply(lambda x: rmse(x, O_list[int(col[1:]) - 1]))
+            multi_simul_df_temp[col_name] = multi_simul_df_temp[col].apply(lambda x: rmse(x, O_list[int(col[1:]) - 1]))
     
     # --- now, we need to calculate criterions for calibration for each y--- 
     # comb는 괜히 구함. 나중에 써먹기
     # 여기서는 rmse_O1, rmse_O2,... 등의 최소, 최대값을 구하고, rmse_sel_yn =  Y_j=Min(〖RMSE〗_tem )+(Max(〖RMSE〗_tem )-Min(〖RMSE〗_tem ))*μ  을 구하면 됌.
     
     # rmse_O 컬럼들 선택
-    rmse_O_columns = [col for col in multi_simul_df.columns if col.startswith('rmse_O')]
+    rmse_O_columns = [col for col in multi_simul_df_temp.columns if col.startswith('rmse_O')]
 
     # 각 rmse_O 컬럼들의 최소값과 최댓값 구하기
-    min_values = multi_simul_df[rmse_O_columns].min()
-    max_values = multi_simul_df[rmse_O_columns].max()
+    min_values = multi_simul_df_temp[rmse_O_columns].min()
+    max_values = multi_simul_df_temp[rmse_O_columns].max()
 
-    # display(multi_simul_df.head(2))
+    # display(multi_simul_df_temp.head(2))
     
     # --- now, calculate RMSEsel for each y.
     # select rmse_O_ columns
-    rmse_O_columns = [col for col in multi_simul_df.columns if col.startswith('rmse_O')]
+    rmse_O_columns = [col for col in multi_simul_df_temp.columns if col.startswith('rmse_O')]
 
     # save the result by creating another df
     rmse_sel_df = pd.DataFrame()
@@ -225,11 +236,128 @@ def prep1_criterion(O_list, multi_simul_df, u, k):
         # print(col, rmse_min, rmse_max)
         # add the calculation result to new columns
         rmse_sel_df[col] = [rmse_min + (rmse_max - rmse_min) * u]
+        rmse_sel = rmse_min + (rmse_max - rmse_min) * u
+        
+        # new columns for calculation
+        multi_simul_df_temp[col + '_sel'] = rmse_sel
+    
+        
+
+    return rmse_sel_df, multi_simul_df_temp
     
     
 
-        
+
+# ## 2) preprocessing (2) - Sorting Y and X
+
+# In[206]:
+
+
+def sorting_Y(multi_simul_df_rmse_sel):
+    '''
+    Count the cases where 'rmse' is smaller than 'rmse_sel'. If the counts are higher, that 'y' is calibrated first.
     
-    return rmse_sel_df
+    Parameters
+    ----------
+    multi_simul_df_rmse_sel: result of multiple simulation that includes rmse and rmse_sel
+    
+    Returns
+    -------
+    DataFrame
+        A comma-separated values (csv) file is returned as two-dimensional
+        data structure with labeled axes.
+
+    Examples
+    --------
+    >>> y_seq_df = sorting_Y(multi_simul_df_rmse_sel)
+    '''          
+    
+    # Columns that starts with rmse_O
+    rmse_cols = [col for col in multi_simul_df_rmse_sel.columns if col.startswith('rmse_O')]
+    num_rmse_cols = int(len(rmse_cols)/2)
+    num_rmse_cols
+    
+    # Count rows that satisfies the condition (rmse < rmse_sel)
+    result_df = pd.DataFrame()
+    
+    for i in range(1, num_rmse_cols + 1):
+        rmse_col = f'rmse_O{i}'
+        sel_col = f'rmse_O{i}_sel'
+        count = multi_simul_df_rmse_sel[multi_simul_df_rmse_sel[rmse_col] < multi_simul_df_rmse_sel[sel_col]].shape[0]
+        
+        y_col = f'y{i}' # y_seq_df
+        # y_seq_df = y_seq_df.append({'y': y_col, 'count': count}, ignore_index=True)
+
+        y_col = f'y{i}'
+        y_seq_df = pd.DataFrame({'y': [y_col], 'count': [count]})
+        result_df = pd.concat([result_df, y_seq_df], ignore_index=True)
+        
+    # 'count' 컬럼을 기준으로 내림차순 정렬하여 'y' 값을 출력
+    sorted_y_seq_df = result_df.sort_values(by='count', ascending=False)
+
+    print('The order of Ys:', sorted_y_seq_df['y'].to_list())
+    
+    return result_df
+
+
+# In[221]:
+
+
+def sorting_X(problem: dict, multi_simul_df_rmse_sel, GSA = 'RBD-FAST'):
+    
+    '''
+    
+    Sobol: Sobol’ Sensitivity Analysis
+    FAST: Fourier Amplitude Sensitivity Test
+    RBD-FAST: Random Balance Designs Fourier Amplitude Sensitivity Test
+    Delta: Delta Moment-Independent Measure
+    '''
+    # x_array
+    Xs = np.array(multi_simul_df_rmse_sel['comb'].to_list())
+    
+    # 'rmse_O'로 시작하고 '_sel'이 없는 컬럼들을 뽑아서 모든 값을 array로 만들어서 리스트에 저장
+    rmse_o_columns = [col for col in multi_simul_df_rmse_sel.columns if col.startswith('rmse_O') and not col.endswith('_sel')]
+    y_list = [np.array(multi_simul_df_rmse_sel[col]) for col in rmse_o_columns]
+
+
+    Si_list = []
+
+    for y in y_list:
+        
+        if GSA == 'Sobol':
+            Si = sobol.analyze(problem, y)
+            # print(Si['S1'])
+        elif GSA == 'FAST':
+            Si = fast.analyze(problem, y)
+        elif GSA == 'RBD-FAST':
+            Si = rbd_fast.analyze(problem, Xs, y)
+        elif GSA == 'Delta':
+            Si = delta.analyze(problem, Xs, y)
+            
+        Si_list.append(Si['S1']) # the first-order sensitivity indices
+    
+    # --- Now, we will return each first order sensitivity index
+    # calculate average of sensitiviry indices
+    averages = [sum(column) / len(column) for column in zip(*Si_list)]
+
+    # new dataframe
+    si_df = pd.DataFrame()
+
+    # insert x1, x2, x2... into 'Xs' column
+    si_df['Xs'] = [f'x{i}' for i in range(1, len(averages) + 1)]
+
+    # calculate average of Si and put those to 'first_order_Si' column
+    si_df['first_order_Si'] = averages
+    
+            
+    # print 'x' by decending order based on 'count' column
+    sorted_x_seq_df = si_df.sort_values(by='first_order_Si', ascending=False)
+
+    print('The order of Xs:', sorted_x_seq_df['Xs'].to_list())
+    
+    
+    return si_df
+
+
 
 
