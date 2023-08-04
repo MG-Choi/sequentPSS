@@ -12,7 +12,7 @@ import os #os의 경우 기본적으로 주어지기 때문에 setup.py에 하�
 
 # ## data
 
-# In[76]:
+# In[129]:
 
 
 # change path to relative path - only for publishing
@@ -23,14 +23,15 @@ path = "./sampleData/concatenated_df.csv"
 simul_data = pd.read_csv(path)
 
 oPath = "./sampleData/"
-O1 = pd.read_csv(oPath + 'O1.txt')
-O2 = pd.read_csv(oPath + 'O2.txt')
-O3 = pd.read_csv(oPath + 'O3.txt')
+O1 = sorted(np.loadtxt(oPath + "O1.txt"))
+O2 = sorted(np.loadtxt(oPath + "O2.txt"))
+O3 = sorted(np.loadtxt(oPath + "O3.txt"))
+
 
 
 # ## simulation code
 
-# In[83]:
+# In[103]:
 
 
 def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
@@ -98,7 +99,7 @@ def simple_Simulation(p1: 'int', p2: 'int', p3: 'int', n = 10):
 
 # ## 1) preprocessing (1) - Determine a criterions for calibration
 
-# In[90]:
+# In[150]:
 
 
 # run multiple simulations
@@ -127,6 +128,7 @@ def multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 
     >>> multi_simul_df = multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 3)
     '''    
     
+    global simple_Simulation
     
     # list for saving all results dfs
     prep1_dfs = []
@@ -148,14 +150,86 @@ def multiple_simple_simulation(p1_list, p2_list, p3_list, M = 150, u = 0.1, k = 
     return result_df
 
 
-# In[ ]:
+# In[207]:
 
 
 # Preprocessing (1): determining a criterion for calibration
 
+#def prep1_criterion():
+
+def prep1_criterion(O_list, multi_simul_df, u, k):
+    '''
+    As a preprocessing step, the root mean square error (RMSE) is calculated to determine the criterion for calibration.
+    
+    Parameters
+    ----------
+    O_list: 
+    multi_simul_df:
+    u: leniency index (default:0.1, too low:overfit, too high:uncertainty)
+    k: the number of parameters (3)
+    
+    * If there are multiple y columns in multi_simul_df, they should be denoted as y1, y2, y3, y4, and so on.
+    * Likewise, p column should be in the form of p1, p2, p3, p4, and so on.
+
+    Returns
+    -------
+    DataFrame
+        A comma-separated values (csv) file is returned as two-dimensional
+        data structure with labeled axes.
+
+    Examples
+    --------
+    >>> 
+    '''        
+    
+    # --- func for RMSE calculation ---
+    def rmse(actual, predicted):
+        return np.sqrt(np.mean((np.array(actual) - np.array(predicted))**2))
 
 
-# In[89]:
+    # --- add combinations of y ---
+    comb_columns = [col for col in multi_simul_df.columns if col.startswith('p')] # if the comlumn name starts with p
+    multi_simul_df['comb'] = multi_simul_df[comb_columns].apply(lambda row: list(row), axis=1)
 
+    
+    # --- add new columns of rmse between y columns and O_list ---
+    for i, col in enumerate(multi_simul_df.columns):
+        if col.startswith('y'):
+            col_name = 'rmse_O' + col[1:]
+            # print(col[1:])
+            multi_simul_df[col_name] = multi_simul_df[col].apply(lambda x: rmse(x, O_list[int(col[1:]) - 1]))
+    
+    # --- now, we need to calculate criterions for calibration for each y--- 
+    # comb는 괜히 구함. 나중에 써먹기
+    # 여기서는 rmse_O1, rmse_O2,... 등의 최소, 최대값을 구하고, rmse_sel_yn =  Y_j=Min(〖RMSE〗_tem )+(Max(〖RMSE〗_tem )-Min(〖RMSE〗_tem ))*μ  을 구하면 됌.
+    
+    # rmse_O 컬럼들 선택
+    rmse_O_columns = [col for col in multi_simul_df.columns if col.startswith('rmse_O')]
+
+    # 각 rmse_O 컬럼들의 최소값과 최댓값 구하기
+    min_values = multi_simul_df[rmse_O_columns].min()
+    max_values = multi_simul_df[rmse_O_columns].max()
+
+    # display(multi_simul_df.head(2))
+    
+    # --- now, calculate RMSEsel for each y.
+    # select rmse_O_ columns
+    rmse_O_columns = [col for col in multi_simul_df.columns if col.startswith('rmse_O')]
+
+    # save the result by creating another df
+    rmse_sel_df = pd.DataFrame()
+
+    for col in rmse_O_columns:
+        rmse_min = min_values[col]
+        rmse_max = max_values[col]
+        # print(col, rmse_min, rmse_max)
+        # add the calculation result to new columns
+        rmse_sel_df[col] = [rmse_min + (rmse_max - rmse_min) * u]
+    
+    
+
+        
+    
+    return rmse_sel_df
 
 
