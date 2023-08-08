@@ -28,7 +28,7 @@ k = 3
 # ---  run simulations for M(2k+2) times with random parameter values---
 multi_simul_df = sqp.multiple_simple_simulation(x1_list, x2_list, x3_list, M, k) 
 
-display(multi_simul_df.head())
+print('asd')
 ```
 
 
