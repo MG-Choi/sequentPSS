@@ -31,7 +31,10 @@ multi_simul_df = sqp.multiple_simple_simulation(x1_list, x2_list, x3_list, M, k)
 multi_simul_df.head()
 ```
 
+<img src="/sequentPSS/screenshot/multi_simul_df.head().png" alt="df result of simulation" width="400" height="300">
+
 ![df result of simulation](/sequentPSS/screenshot/multi_simul_df.head().png)
+
 
 Here's the DataFrame representing the simulation results with three parameters (x1, x2, x3) and three simulation outcomes (y1, y2, y3)
 
