@@ -7,7 +7,7 @@ sequentPSS / version 0.0.7
 - install:
 
 ```python
-!pip install sequentPSS == 0.0.7
+!pip install sequentPSS
 ```
 
 ## Usage (using sample simulation in library)
