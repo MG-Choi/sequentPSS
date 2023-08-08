@@ -11,7 +11,9 @@ sequentPSS / version 0.0.7
 ```
 
 ## Usage (using sample simulation in library)
-### 1. set parameter and hyperparameter
+
+### 1. Preprocessing
+#### 1.1 set parameter and hyperparameter
 
 ``` python
 import sequentPSS as sqp
@@ -31,15 +33,13 @@ multi_simul_df = sqp.multiple_simple_simulation(x1_list, x2_list, x3_list, M, k)
 multi_simul_df.head()
 ```
 
-<img src="/sequentPSS/screenshot/multi_simul_df.head().png" alt="df result of simulation" width="400" height="300">
-
 ![df result of simulation](/sequentPSS/screenshot/multi_simul_df.head().png)
 
 
 Here's the DataFrame representing the simulation results with three parameters (x1, x2, x3) and three simulation outcomes (y1, y2, y3)
 
 
-### 2. determining rmse_sel for calibration
+#### 1.2 determining rmse_sel for calibration
 
 ``` python
 # --- preprocessing 1: determining a criterion for calibration
@@ -52,8 +52,40 @@ rmse_sel_df, multi_simul_df_rmse_sel = sqp.prep1_criterion(O_list, multi_simul_d
 rmse_sel_df
 ```
 
+![rmse_sel_df](/sequentPSS/screenshot/rmse_sel_df.png)
 
 
+### 1.3 sorting Y and X for calibration
+
+```python
+
+# --- preprocessing 2: sorting Y for calibration
+
+y_seq_df = sqp.sorting_Y(multi_simul_df_rmse_sel)
+y_seq_df
+
+```
+
+![y_seq_df](/sequentPSS/screenshot/y_seq_df.png)
+
+```python
+
+# --- preprocessing 3: sorting X based on sensitivity analysis for calibration
+problem = {
+    'num_vars': 3,
+    'names': ['x1', 'x2', 'x3'],
+    'bounds': [[1, 5],
+               [1, 5],
+               [1, 5]]
+}
+
+x_seq_df = sqp.sorting_X(problem, multi_simul_df_rmse_sel, GSA = 'RBD-FAST') # run GSA
+x_seq_df
+
+```
+![x_seq_df](/sequentPSS/screenshot/x_seq_df.png)
+
+Now we have rmse_sel, sorted y and sorted x, we can run sequential calibration.
 
 
 '''
