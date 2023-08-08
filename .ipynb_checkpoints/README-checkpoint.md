@@ -113,6 +113,8 @@ Sequential calibration is conducted in the order of sorted y and x values.
 The first step involves fixing x3 (and calibrate with y1).
 The RMSE_sel value corresponding to y1 and its matching O1 values are used (401.295316), along with the tolerance index (t).
 
+---
+
 ```python
 # Second round of y1: fix x2
 
@@ -127,7 +129,7 @@ print('updated x2 parameter space:', x2_list)
 reliability of 'x2' for 'y1' (1 - uncertainty degree):  {1: 0.93, 2: 0.88, 3: 0.79, 4: 0.79, 5: 0.58}
 updated x2 parameter space: [1, 2, 3, 4, 5]
 ```
-
+---
 
 ```python
 # Third round of y1: fix x1
@@ -246,9 +248,11 @@ updated x1 parameter space: [1, 2, 3, 4]
 결과는 다음과 같다.
 round 1에서 y1을 기준으로 calibration한 결과
 
-x1: [1,2,3,4,5] -> [3,4,5]
-x2: [1,2,3,4,5] -> [1,2,3,4,5]
-x3: [1,2,3,4,5] -> [1,2,3,4,5]
+- x1: [1,2,3,4,5] -> [3,4,5]
+- x2: [1,2,3,4,5] -> [1,2,3,4,5]
+- x3: [1,2,3,4,5] -> [1,2,3,4,5]
+
+
 
 
 
