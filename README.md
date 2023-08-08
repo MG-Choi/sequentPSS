@@ -4,12 +4,32 @@ sequential parameter space search method based on global sensitivity analysis
 
 ## License
 sequentPSS / version 0.0.7
-- usages:
+- install:
 
 ```python
 !pip install sequentPSS == 0.0.7
+```
 
+## Usage (using sample simulation in library)
+### 1. set parameter and hyperparameter
 
+``` python
+import sequentPSS as sqp
+
+# set parameter spaces
+x1_list = [1,2,3,4,5]
+x2_list = [1,2,3,4,5]
+x3_list = [1,2,3,4,5]
+
+# set hyper parameters
+M = 150
+k = 3
+
+# ---  run simulations for M(2k+2) times with random parameter values---
+multi_simul_df = sqp.multiple_simple_simulation(x1_list, x2_list, x3_list, M, k) 
+
+display(multi_simul_df.head())
+```
 
 
 
