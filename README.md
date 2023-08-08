@@ -44,7 +44,7 @@ Here's the DataFrame representing the simulation results with three parameters (
 ``` python
 # --- preprocessing 1: determining a criterion for calibration
 
-O_list = [sqp.O1, sqp.O2, sqp.O3] # observed data to list -> sqp.O1, sqp.O2, sqp.O3 를 넣어야 함.
+O_list = [sqp.O1, sqp.O2, sqp.O3] # observed data to list -
 u = 0.1
 rmse_sel_df, multi_simul_df_rmse_sel = sqp.prep1_criterion(O_list, multi_simul_df, u, k)
 
@@ -86,6 +86,33 @@ x_seq_df
 ![x_seq_df](/sequentPSS/screenshot/x_seq_df.png)
 
 Now we have rmse_sel, sorted y and sorted x, we can run sequential calibration.
+
+
+## sequential calibration
+
+```python
+# -- now we need to run sequential calibration with the previous sequence of y and x (y1 -> y3 -> y2 / x3 -> x2 -> x1) --
+# First round of y1: fix x3
+x1_list = [1,2,3,4,5]
+x2_list = [1,2,3,4,5]
+x3_list = [1,2,3,4,5]
+
+fix_x3_y1_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x3', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+
+x3_list, result_df = seqCalibration(fix_x = 'x3', fix_y = 'y1', rmse_sel = 401.295316, simul_result_df = fix_x3_y1_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+
+print('updated x3 parameter space:', x3_list)
+```
+
+```
+reliability of 'x3' for 'y1' (1 - uncertainty degree):  {3: 0.59, 4: 0.91, 5: 1.0}
+updated x3 parameter space: [3, 4, 5]
+```
+
+Sequential calibration is conducted in the order of sorted y and x values. 
+The first step involves fixing x3 (and calibrate with y1).
+The RMSE_sel value corresponding to y1 and its matching O1 values are used (401.295316), along with the tolerance index (t).
+
 
 
 '''
