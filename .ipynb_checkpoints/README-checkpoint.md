@@ -55,7 +55,7 @@ rmse_sel_df
 ![rmse_sel_df](/sequentPSS/screenshot/rmse_sel_df.png)
 
 
-### 1.3 sorting Y and X for calibration
+#### 1.3 sorting Y and X for calibration
 
 ```python
 
@@ -88,8 +88,8 @@ x_seq_df
 Now we have rmse_sel, sorted y and sorted x, we can run sequential calibration.
 
 
-## 2. sequential calibration
-### 2.1 round 1: calibrate parameters with y1
+### 2. sequential calibration
+#### 2.1 round 1: calibrate parameters with y1
 ```python
 # -- now we need to run sequential calibration with the previous sequence of y and x (y1 -> y3 -> y2 / x3 -> x2 -> x1) --
 # First round of y1: fix x3
@@ -146,7 +146,7 @@ reliability of 'x1' for 'y1' (1 - uncertainty degree):  {1: 0.726, 2: 0.869, 4: 
 updated x1 parameter space: [1, 2, 3, 4, 5]
 ```
 
-### 2.2 round 2: calibrate parameters with y3
+#### 2.2 round 2: calibrate parameters with y3
 
 ```python
 # First round of y3: fix x3
@@ -163,7 +163,7 @@ reliability of 'x3' for 'y3' (1 - uncertainty degree):  {4: 0.41, 5: 0.62}
 updated x3 parameter space: [4, 5]
 ```
 
-
+---
 ```python
 # second round of y3: fix x2
 
@@ -178,7 +178,7 @@ print('updated x2 parameter space:', x2_list)
 reliability of 'x2' for 'y3' (1 - uncertainty degree):  {1: 0.689, 5: 0.531, 4: 0.515, 3: 0.657, 2: 0.478}
 updated x2 parameter space: [1, 2, 3, 4, 5]
 ```
-
+---
 
 ```python
 # second round of y3: fix x1
@@ -195,7 +195,7 @@ reliability of 'x2' for 'y3' (1 - uncertainty degree):  {1: 0.67, 2: 0.43, 3: 0.
 updated x1 parameter space: [1, 2, 3, 4, 5]
 ```
 
-### 2.3 round 3: calibrate parameters with y2
+#### 2.3 round 3: calibrate parameters with y2
 
 ```python
 # First round of y2: fix x3
@@ -211,7 +211,7 @@ print('updated x3 parameter space:', x3_list)
 reliability of 'x3' for 'y2' (1 - uncertainty degree):  {5: 0.678, 4: 0.429}
 updated x3 parameter space: [4, 5]
 ```
-
+---
 
 ```python
 # second round of y2: fix x2
@@ -228,7 +228,7 @@ reliability of 'x2' for 'y2' (1 - uncertainty degree):  {3: 0.25, 1: 0.421, 4: 0
 updated x2 parameter space: [1, 2, 3, 4]
 ```
 
-
+---
 ```python
 # second round of y2: fix x1
 
@@ -244,27 +244,34 @@ reliability of 'x1' for 'y2' (1 - uncertainty degree):  {3: 0.443, 1: 0.34, 2: 0
 updated x1 parameter space: [1, 2, 3, 4]
 ```
 
+---
 
-결과는 다음과 같다.
-round 1에서 y1을 기준으로 calibration한 결과
+The calibration results are as follows:
+1. Calibration based on y1 in round 1 led to the following outcomes:
 
 - x1: [1,2,3,4,5] -> [3,4,5]
 - x2: [1,2,3,4,5] -> [1,2,3,4,5]
 - x3: [1,2,3,4,5] -> [1,2,3,4,5]
 
+2. Calibration based on y3 in round 2 led to the following outcomes:
+
+- x1: [3,4,5] -> [4,5]
+- x2: [1,2,3,4,5] -> [1,2,3,4,5]
+- x3: [1,2,3,4,5] -> [1,2,3,4,5]
+
+3. Calibration based on y2 in round 3 led to the following outcomes:
+
+- x1: [4,5] -> [4,5]
+- x2: [1,2,3,4,5] -> [1,2,3,4]
+- x3: [1,2,3,4,5] -> [1,2,3,4]
 
 
+---
 
+## Related Document: 
+ will be added
 
+## Author
 
-'''
-프로젝트 이름: 라이브러리의 이름과 간단한 설명을 포함합니다.
-라이선스 정보: 라이브러리의 사용 조건과 라이선스를 명시합니다.
-설치 방법: 라이브러리를 설치하는 방법을 설명합니다. 일반적으로 pip를 사용한 설치 방법을 기재합니다.
-사용 방법: 라이브러리를 사용하는 예제 코드와 함께 간략하게 사용 방법을 설명합니다.
-API 문서: 함수, 클래스 또는 모듈에 대한 상세한 설명과 파라미터, 반환 값 등을 기술합니다.
-예제 코드: 라이브러리의 기능을 더욱 잘 이해할 수 있도록 실제 사용 예제를 포함합니다.
-기여 방법: 사용자들이 프로젝트에 기여하는 방법과 프로세스를 안내합니다.
-저자 및 연락처 정보: 프로젝트에 대한 질문이나 문의사항을 받을 수 있는 연락처 정보를 제공합니다.
-버전 및 업데이트 정보: 라이브러리의 버전 정보와 최신 업데이트 내역을 기재합니다.
-'''
+- **Author:** Moongi Choi
+- **Email:** u1316663@utah.edu
