@@ -25,7 +25,7 @@ Y = \{Y_1, Y_2, \cdots Y_j, \cdots, Y_d\} \in \mathbb{R}^d
 $$
 
 
-##### Each parameter \( X \) takes a parameter value \( x \) in the parameter space.
+###### Each parameter \( X \) takes a parameter value \( x \) in the parameter space.
     
     
 #### 1.1 set parameter and hyperparameter
@@ -61,9 +61,9 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 <img src="/sequentPSS/screenshot/Algorithm1.png" alt="Preprocessing(1): determining a criterion for calibration" width="600"/>
 
-##### In the preprocessing step, the criterion for calibration, RMSE<i><sub>sel</sub></i>, is determined as illustrated in Algorithm 1. During process (1), a parameter value x is randomly selected for each X<sub>i</sub> based on a uniform distribution. These values are then combined to compute RMSE<i><sub>tem</sub></i> in each iteration. This procedure continues until reaching M(2k+2) iterations, as outlined in equation 1.
+###### In the preprocessing step, the criterion for calibration, RMSE<i><sub>sel</sub></i>, is determined as illustrated in Algorithm 1. During process (1), a parameter value x is randomly selected for each X<sub>i</sub> based on a uniform distribution. These values are then combined to compute RMSE<i><sub>tem</sub></i> in each iteration. This procedure continues until reaching M(2k+2) iterations, as outlined in equation 1.
 
-##### RMSE, a widely-used metric for model calibration, is employed here to assess the discrepancy between simulated outcomes and observed data. The threshold RMSE<i><sub>sel</sub></i> is set for each Y<sub>j</sub> as the upper limit RMSE from any parameter combination. Users can adjust the leniency index μ to control the calibration rigor. For instance, with a μ value of 0.1, the lower 10% of all RMSE values become the RMSE<i><sub>sel</sub></i> criteria. Setting μ too low might lead to overfitting, while a higher value can introduce undue uncertainty.
+###### RMSE, a widely-used metric for model calibration, is employed here to assess the discrepancy between simulated outcomes and observed data. The threshold RMSE<i><sub>sel</sub></i> is set for each Y<sub>j</sub> as the upper limit RMSE from any parameter combination. Users can adjust the leniency index μ to control the calibration rigor. For instance, with a μ value of 0.1, the lower 10% of all RMSE values become the RMSE<i><sub>sel</sub></i> criteria. Setting μ too low might lead to overfitting, while a higher value can introduce undue uncertainty.
 
 ``` python
 # --- preprocessing 1: determining a criterion for calibration
@@ -80,6 +80,15 @@ rmse_sel_df
 
 
 #### 1.3 sorting Y and X for calibration
+
+<img src="/sequentPSS/screenshot/Algorithm2.png" alt="preprocessing (2): sorting X and Y" width="600"/>
+
+###### Algorithm 2 details the procedure for ordering <i>j</i> and <i>i</i> before calibration. Utilizing simulations from Algorithm 1, data generated from X to Y are used in processes (2) and (3). 
+
+###### In process (2), <i>c(Y<sub>j</sub>)</i> showcases the proportion of instances where <i>RMSE<sub>tem</sub></i> is smaller than <i>RMSE<sub>sel</sub></i> compared to all cases <i>n</i>. A prominent <i>c(Y<sub>j</sub>)</i> indicates a broad parameter space apt for calibration. Therefore, <i>j</i> is arranged in descending order of <i>c(Y<sub>j</sub>)</i> for subsequent calibration phases. 
+
+###### In process (3), the first-order sensitivity index of each <i>X<sub>i</sub></i> in relation to <i>Y<sub>j</sub></i> (denoted as <i>S<sub>ji</sub></i>) is organized in descending order. This index gauges the extent to which <i>X<sub>i</sub></i> uniquely impacts <i>Y<sub>j</sub></i>. If <i>X<sub>i</sub></i> has a significantly low sensitivity index, it might not notably influence the outcome variance and can be skipped from calibration. Calibration begins by focusing on the most critical parameters based on their sensitivity indices.
+
 
 ```python
 
