@@ -59,6 +59,7 @@ Here's the DataFrame representing the simulation results with three parameters (
 - Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
 
 ![Preprocessing(1): determining a criterion for calibration](/sequentPSS/screenshot/Algorithm1.png)
+<img src="/sequentPSS/screenshot/Algorithm1.png" alt="Preprocessing(1): determining a criterion for calibration" width="600"/>
 
 
 
