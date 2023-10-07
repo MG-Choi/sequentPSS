@@ -56,6 +56,7 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 ##### Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
 
+```plaintext
 **Input:** \( \mu, M \)
 
 1. `Initialize` \( n = 1 \), `and` \( \text{RMSE\_tem} = [] \)
@@ -81,7 +82,7 @@ Here's the DataFrame representing the simulation results with three parameters (
 **Where:**
 - \( k \) is the number of parameters
 
-
+```
 
 
 ``` python
