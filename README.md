@@ -122,6 +122,11 @@ x_seq_df
 
 
 ### 2. sequential calibration
+
+<img src="/sequentPSS/screenshot/Algorithm3.png" alt="parameter space searching and calibration for each Yj" width="450"/>
+<img src="/sequentPSS/screenshot/Fig1.png" alt="parameter space search and calibration process" width="550"/>
+
+
 #### 2.1 round 1: calibrate parameters with y1
 ```python
 # -- now we need to run sequential calibration with the previous sequence of y and x (y1 -> y3 -> y2 / x3 -> x2 -> x1) --
@@ -142,9 +147,7 @@ reliability of 'x3' for 'y1' (1 - uncertainty degree):  {3: 0.59, 4: 0.91, 5: 1.
 updated x3 parameter space: [3, 4, 5]
 ```
 
-Sequential calibration is conducted in the order of sorted y and x values. 
-The first step involves fixing x3 (and calibrate with y1).
-The RMSE_sel value corresponding to y1 and its matching O1 values are used (401.295316), along with the tolerance index (t).
+###### Sequential calibration is conducted in the order of sorted y and x values. The first step involves fixing <i>x<sub>3</sub></i> (and calibrate with <i>y<sub>1</sub></i>). The RMSE_sel value corresponding to <i>y<sub>1</sub></i> and its matching O1 values are used (401.295316), along with the tolerance index (t).
 
 ---
 
