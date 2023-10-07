@@ -14,7 +14,7 @@ sequentPSS / version 0.0.9
 
 ### 1. Preprocessing
 
-The SPS algorithm consists of preprocessing and sequential calibration stages, with validation being optional. In this study, \( k \) number of parameters are denoted as \( X \), while \( d \) number of outcomes are denoted as \( Y \). The mathematical representation is:
+###### The SPS algorithm consists of preprocessing and sequential calibration stages, with validation being optional. In this study,<i> k </i> number of parameters are denoted as <i> X </i>, while <i> d </i> number of outcomes are denoted as <i> Y </i>. The mathematical representation is:
 
 $$
 X = \{X_1, X_2, \cdots X_i, \cdots, X_k\} \in \mathbb{R}^k
@@ -60,9 +60,9 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 <img src="/sequentPSS/screenshot/Algorithm1.png" alt="Preprocessing(1): determining a criterion for calibration" width="600"/>
 
-In the preprocessing step, the criterion for calibration, RMSE<sub>sel</sub>, is determined as illustrated in Algorithm 1. During process (1), a parameter value x is randomly selected for each X<sub>i</sub> based on a uniform distribution. These values are then combined to compute RMSE<sub>tem</sub> in each iteration. This procedure continues until reaching M(2k+2) iterations, as outlined in equation 1.
+In the preprocessing step, the criterion for calibration, RMSE<i><sub>sel</sub></i>, is determined as illustrated in Algorithm 1. During process (1), a parameter value x is randomly selected for each X<sub>i</sub> based on a uniform distribution. These values are then combined to compute RMSE<i><sub>tem</sub></i> in each iteration. This procedure continues until reaching M(2k+2) iterations, as outlined in equation 1.
 
-RMSE, a widely-used metric for model calibration, is employed here to assess the discrepancy between simulated outcomes and observed data. The threshold RMSE<sub>sel</sub> is set for each Y<sub>j</sub> as the upper limit RMSE from any parameter combination. Users can adjust the leniency index μ to control the calibration rigor. For instance, with a μ value of 0.1, the lower 10% of all RMSE values become the RMSE<sub>sel</sub> criteria. Setting μ too low might lead to overfitting, while a higher value can introduce undue uncertainty.
+RMSE, a widely-used metric for model calibration, is employed here to assess the discrepancy between simulated outcomes and observed data. The threshold RMSE<i><sub>sel</sub></i> is set for each Y<sub>j</sub> as the upper limit RMSE from any parameter combination. Users can adjust the leniency index μ to control the calibration rigor. For instance, with a μ value of 0.1, the lower 10% of all RMSE values become the RMSE<i><sub>sel</sub></i> criteria. Setting μ too low might lead to overfitting, while a higher value can introduce undue uncertainty.
 
 ``` python
 # --- preprocessing 1: determining a criterion for calibration
