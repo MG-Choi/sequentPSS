@@ -56,29 +56,6 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 - Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
 
--- Input: \( \mu, M \)
-
-1. `Initialize` \( n = 1 \), `and` \( \text{RMSE\_tem} = [] \)
-2. `while` \( n \leq M(2k+2) \) `do`:
-    1. `for each` \( \text{rand}(x) \) `in` \( X \) `do`:
-        1. `Compute` RMSE `between` \( Y \) `and` \( O \)
-        2. `Append` RMSE `to` \( \text{RMSE\_tem} \)
-    2. `End for`
-    3. \( n = n + 1 \)
-3. `End while`
-4. `for each` \( Y_j \) `do`:
-    1. \( \text{RMSE\_sel} \) `of` \( Y_j \) `=` \( \min(\text{RMSE\_tem}) + (\max(\text{RMSE\_tem}) - \min(\text{RMSE\_tem})) \times \mu \)
-5. `End for`
-
--- Where:
-\( \mu \) is the leniency index (default: 0.1; too low results in overfitting, too high increases uncertainty)
-\( M \) is the Monte Carlo index (default: 100; too low reduces accuracy, too high increases computational intensity)
-
-
-
-
-
-
 ``` python
 # --- preprocessing 1: determining a criterion for calibration
 
