@@ -57,7 +57,7 @@ multi_simul_df.head()
 
 #### 1.2 determining rmse_sel for calibration
 
-- Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
+###### Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
 
 <img src="/sequentPSS/screenshot/Algorithm1.png" alt="Preprocessing(1): determining a criterion for calibration" width="450"/>
 
@@ -81,7 +81,7 @@ rmse_sel_df
 
 #### 1.3 sorting Y and X for calibration
 
-- Algorithm 2. preprocessing (2): sorting X and Y
+###### Algorithm 2. preprocessing (2): sorting X and Y
 
 <img src="/sequentPSS/screenshot/Algorithm2.png" alt="preprocessing (2): sorting X and Y" width="450"/>
 
@@ -125,11 +125,11 @@ x_seq_df
 
 ### 2. sequential calibration
 
-- Algorithm 3. parameter space searching and calibration for each <i>y<sub>j</sub></i>
+###### Algorithm 3. parameter space searching and calibration for each <i>y<sub>j</sub></i>
 
 <img src="/sequentPSS/screenshot/Algorithm3.png" alt="parameter space searching and calibration for each Yj" width="450"/>
 
-- Figure 1. parameter space search and calibration process <i>y<sub>j</sub></i>
+###### Figure 1. parameter space search and calibration process <i>y<sub>j</sub></i>
 <img src="/sequentPSS/screenshot/Fig1.png" alt="parameter space search and calibration process" width="650"/>
 
 
@@ -138,10 +138,10 @@ x_seq_df
 ###### Subsequently, parameter space of <i>X<sub>1</sub></i> is reduced by eliminating <i>v</i> if many combinations involving <i>v</i> don't meet the <i>RMSE<sub>sel</sub></i> threshold. If <i>v</i> occurrences in C is below <i>τ * M</i>, <i>v</i> is removed from <i>X<sub>1</sub></i>. τ, a user-defined tolerance index, dictates the parameter space reduction intensity. High τ values can lead to significant parameter space reduction and stringent calibration, while low values keep more of <i>v</i> in C, making space reduction inefficient. This process repeats for <i>X<sub>2</sub></i> using the already reduced <i>X<sub>1</sub></i> space. Ultimately, we get the condensed parameter space for the X sets, displayed in Figure 1. If additional Y outcomes exist, the loop reinitiates with the shrunk X parameter spaces.
 
 
-- Equation 1. uncertainty of the calibrated parameter combination <i>y<sub>j</sub></i>
+###### Equation 1. uncertainty of the calibrated parameter combination <i>y<sub>j</sub></i>
 <img src="/sequentPSS/screenshot/Equation1.png" alt="uncertainty of the calibrated parameter combination" width="450"/>
 
-###### ㅁㄴㅇ
+###### After completing sequential calibration for all <i>Y</i>, the refined parameter combinations are the final output. The Uncertainty index <i>U</i> aids in identifying the optimal parameter set, with lower indices indicating higher trustworthiness. Based on Equation 4, <i>R</i> encompasses all RMSE outcomes, while <i>C</i> captures only those RMSEs falling beneath <i>RMSE<sub>sel</sub></i>. The ratio of <i>C</i> to <i>R</i> illustrates the reliability of each parameter set. Deducting this ratio from 1 produces the uncertainty measure U. For instance, if a parameter set yields an acceptable RMSE in 7 out of 10 instances, there's a 70% confidence in that result, yielding an uncertainty of 0.3 for that combo.
 
 
 #### 2.1 round 1: calibrate parameters with y1
