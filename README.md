@@ -18,7 +18,7 @@ sequentPSS / version 0.0.9
 The SPS algorithm consists of preprocessing and sequential calibration stages, with validation being optional. In this study, \( k \) number of parameters are denoted as \( X \), while \( d \) number of outcomes are denoted as \( Y \). The mathematical representation is:
 
 $$
-X = { \{X_1, X_2, \cdots X_i, \cdots, X_k\} \in \mathbb{R}^k
+X = \{X_1, X_2, \cdots X_i, \cdots, X_k\} \in \mathbb{R}^k
 $$
 
 $$
@@ -53,6 +53,36 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 
 #### 1.2 determining rmse_sel for calibration
+
+##### Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
+
+**Input:** \( \mu, M \)
+
+1. `Initialize` \( n = 1 \), `and` \( \text{RMSE\_tem} = [] \)
+2. `while` \( n \leq M(2k+2) \) `do`:
+    1. `for each` \( \text{rand}(x) \) `in` \( X \) `do`:
+        1. `Compute` RMSE `between` \( Y \) `and` \( O \)
+        2. `Append` RMSE `to` \( \text{RMSE\_tem} \)
+    2. `End for`
+    3. \( n = n + 1 \)
+3. `End while`
+4. `for each` \( Y_j \) `do`:
+    1. \( \text{RMSE\_sel} \) `of` \( Y_j \) `=` \( \min(\text{RMSE\_tem}) + (\max(\text{RMSE\_tem}) - \min(\text{RMSE\_tem})) \times \mu \)
+5. `End for`
+
+**Where:**
+- \( \mu \) is the leniency index (default: 0.1; too low results in overfitting, too high increases uncertainty)
+- \( M \) is the Monte Carlo index (default: 100; too low reduces accuracy, too high increases computational intensity)
+
+##### Equation 1. The Number of Monte Carlo Simulations
+
+\[ N_{\text{total simulation\_run}} = (2k+2) M_{\text{MonteCarlo\_run}} \]
+
+**Where:**
+- \( k \) is the number of parameters
+
+
+
 
 ``` python
 # --- preprocessing 1: determining a criterion for calibration

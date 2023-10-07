@@ -26,15 +26,6 @@ Y = \{Y_1, Y_2, \cdots Y_j, \cdots, Y_d\} \in \mathbb{R}^d
 $$
 
 
-\[
-X = \lbrace X_1, X_2, \dots X_i, \dots, X_k \rbrace \in \mathbb{R}^k
-\]
-
-\[
-Y = \lbrace Y_1, Y_2, \dots Y_j, \dots, Y_d \rbrace \in \mathbb{R}^d
-\]
-
-
 Each parameter \( X \) takes a parameter value \( x \) in the parameter space.
 
 ``` python
@@ -62,6 +53,36 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 
 #### 1.2 determining rmse_sel for calibration
+
+##### Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
+
+**Input:** \( \mu, M \)
+
+1. `Initialize` \( n = 1 \), `and` \( \text{RMSE\_tem} = [] \)
+2. `while` \( n \leq M(2k+2) \) `do`:
+    1. `for each` \( \text{rand}(x) \) `in` \( X \) `do`:
+        1. `Compute` RMSE `between` \( Y \) `and` \( O \)
+        2. `Append` RMSE `to` \( \text{RMSE\_tem} \)
+    2. `End for`
+    3. \( n = n + 1 \)
+3. `End while`
+4. `for each` \( Y_j \) `do`:
+    1. \( \text{RMSE\_sel} \) `of` \( Y_j \) `=` \( \min(\text{RMSE\_tem}) + (\max(\text{RMSE\_tem}) - \min(\text{RMSE\_tem})) \times \mu \)
+5. `End for`
+
+**Where:**
+- \( \mu \) is the leniency index (default: 0.1; too low results in overfitting, too high increases uncertainty)
+- \( M \) is the Monte Carlo index (default: 100; too low reduces accuracy, too high increases computational intensity)
+
+##### Equation 1. The Number of Monte Carlo Simulations
+
+\[ N_{\text{total simulation\_run}} = (2k+2) M_{\text{MonteCarlo\_run}} \]
+
+**Where:**
+- \( k \) is the number of parameters
+
+
+
 
 ``` python
 # --- preprocessing 1: determining a criterion for calibration
