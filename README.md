@@ -81,6 +81,8 @@ rmse_sel_df
 
 #### 1.3 sorting Y and X for calibration
 
+- Algorithm 2. preprocessing (2): sorting X and Y
+
 <img src="/sequentPSS/screenshot/Algorithm2.png" alt="preprocessing (2): sorting X and Y" width="450"/>
 
 ###### Algorithm 2 details the procedure for ordering <i>j</i> and <i>i</i> before calibration. Utilizing simulations from Algorithm 1, data generated from X to Y are used in processes (2) and (3). 
@@ -123,8 +125,23 @@ x_seq_df
 
 ### 2. sequential calibration
 
+- Algorithm 3. parameter space searching and calibration for each <i>y<sub>j</sub></i>
+
 <img src="/sequentPSS/screenshot/Algorithm3.png" alt="parameter space searching and calibration for each Yj" width="450"/>
-<img src="/sequentPSS/screenshot/Fig1.png" alt="parameter space search and calibration process" width="550"/>
+
+- Figure 1. parameter space search and calibration process <i>y<sub>j</sub></i>
+<img src="/sequentPSS/screenshot/Fig1.png" alt="parameter space search and calibration process" width="650"/>
+
+
+###### Algorithm 3 details sequential calibration using the ordered Y and X values from Algorithm 2. In process (4), <i>γ</i> stores selected parameter combinations for each X. Initially, a fixed parameter <i>v</i> from <i>X<sub>1</sub></i> is chosen with random selections from other X sets excluding <i>X<sub>1</sub></i>. If the RMSE of the <i>γ</i> combination is under the <i>RMSE<sub>sel</sub></i> threshold, <i>γ</i> is added to C with its RMSE value recorded in R. This iterates M times.
+
+###### Subsequently, parameter space of <i>X<sub>1</sub></i> is reduced by eliminating <i>v</i> if many combinations involving <i>v</i> don't meet the <i>RMSE<sub>sel</sub></i> threshold. If <i>v</i> occurrences in C is below <i>τ * M</i>, <i>v</i> is removed from <i>X<sub>1</sub></i>. τ, a user-defined tolerance index, dictates the parameter space reduction intensity. High τ values can lead to significant parameter space reduction and stringent calibration, while low values keep more of <i>v</i> in C, making space reduction inefficient. This process repeats for <i>X<sub>2</sub></i> using the already reduced <i>X<sub>1</sub></i> space. Ultimately, we get the condensed parameter space for the X sets, displayed in Figure 1. If additional Y outcomes exist, the loop reinitiates with the shrunk X parameter spaces.
+
+
+- Equation 1. uncertainty of the calibrated parameter combination <i>y<sub>j</sub></i>
+<img src="/sequentPSS/screenshot/Equation1.png" alt="uncertainty of the calibrated parameter combination" width="450"/>
+
+###### ㅁㄴㅇ
 
 
 #### 2.1 round 1: calibrate parameters with y1
