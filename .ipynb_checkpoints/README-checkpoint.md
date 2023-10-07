@@ -54,10 +54,9 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 #### 1.2 determining rmse_sel for calibration
 
-##### Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
+* Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
 
-```plaintext
-**Input:** \( \mu, M \)
+- Input: \( \mu, M \)
 
 1. `Initialize` \( n = 1 \), `and` \( \text{RMSE\_tem} = [] \)
 2. `while` \( n \leq M(2k+2) \) `do`:
@@ -71,18 +70,17 @@ Here's the DataFrame representing the simulation results with three parameters (
     1. \( \text{RMSE\_sel} \) `of` \( Y_j \) `=` \( \min(\text{RMSE\_tem}) + (\max(\text{RMSE\_tem}) - \min(\text{RMSE\_tem})) \times \mu \)
 5. `End for`
 
-**Where:**
+- Where:
 - \( \mu \) is the leniency index (default: 0.1; too low results in overfitting, too high increases uncertainty)
 - \( M \) is the Monte Carlo index (default: 100; too low reduces accuracy, too high increases computational intensity)
 
-##### Equation 1. The Number of Monte Carlo Simulations
+* Equation 1. The Number of Monte Carlo Simulations
 
 \[ N_{\text{total simulation\_run}} = (2k+2) M_{\text{MonteCarlo\_run}} \]
 
-**Where:**
+- Where:
 - \( k \) is the number of parameters
 
-```
 
 
 ``` python
