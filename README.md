@@ -18,12 +18,22 @@ sequentPSS / version 0.0.9
 The SPS algorithm consists of preprocessing and sequential calibration stages, with validation being optional. In this study, \( k \) number of parameters are denoted as \( X \), while \( d \) number of outcomes are denoted as \( Y \). The mathematical representation is:
 
 $$
-X = { X_1, X_2, \cdots X_i, \cdots, X_k } \in \mathbb{R}^k
+X = \{X_1, X_2, \cdots X_i, \cdots, X_k\} \in \mathbb{R}^k
 $$
 
 $$
-Y = { Y_1, Y_2, \cdots Y_j, \cdots, Y_d } \in \mathbb{R}^d
+Y = \{Y_1, Y_2, \cdots Y_j, \cdots, Y_d\} \in \mathbb{R}^d
 $$
+
+
+\[
+X = \lbrace X_1, X_2, \dots X_i, \dots, X_k \rbrace \in \mathbb{R}^k
+\]
+
+\[
+Y = \lbrace Y_1, Y_2, \dots Y_j, \dots, Y_d \rbrace \in \mathbb{R}^d
+\]
+
 
 Each parameter \( X \) takes a parameter value \( x \) in the parameter space.
 
