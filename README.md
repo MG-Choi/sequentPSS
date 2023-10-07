@@ -58,9 +58,11 @@ Here's the DataFrame representing the simulation results with three parameters (
 
 - Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
 
-![Preprocessing(1): determining a criterion for calibration](/sequentPSS/screenshot/Algorithm1.png)
 <img src="/sequentPSS/screenshot/Algorithm1.png" alt="Preprocessing(1): determining a criterion for calibration" width="600"/>
 
+In the preprocessing step, the criterion for calibration, \(RMSE\_sel\), is determined as illustrated in Algorithm 1. During process (1), a parameter value \(x\) is randomly selected for each \(X_i\) based on a uniform distribution. These values are then combined to compute \(RMSE\_tem\) in each iteration. This procedure continues until reaching \(M(2k+2)\) iterations, as outlined in equation 1.
+
+RMSE, a widely-used metric for model calibration, is employed here to assess the discrepancy between simulated outcomes and observed data. The threshold \(RMSE\_sel\) is set for each \(Y_j\) as the upper limit RMSE from any parameter combination. Users can adjust the leniency index \(μ\) to control the calibration rigor. For instance, with a \(μ\) value of 0.1, the lower 10% of all RMSE values become the \(RMSE\_sel\) criteria. Setting \(μ\) too low might lead to overfitting, while a higher value can introduce undue uncertainty.
 
 
 ``` python
