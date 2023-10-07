@@ -52,14 +52,14 @@ multi_simul_df.head()
 ![df result of simulation](/sequentPSS/screenshot/multi_simul_df.head().png)
 
 
-Here's the DataFrame representing the simulation results with three parameters (x1, x2, x3) and three simulation outcomes (y1, y2, y3)
+###### Here's the DataFrame representing the simulation results with three parameters (x1, x2, x3) and three simulation outcomes (y1, y2, y3)
 
 
 #### 1.2 determining rmse_sel for calibration
 
 - Algorithm 1. Preprocessing (1): Determining a Criterion for Calibration
 
-<img src="/sequentPSS/screenshot/Algorithm1.png" alt="Preprocessing(1): determining a criterion for calibration" width="600"/>
+<img src="/sequentPSS/screenshot/Algorithm1.png" alt="Preprocessing(1): determining a criterion for calibration" width="400"/>
 
 ###### In the preprocessing step, the criterion for calibration, RMSE<i><sub>sel</sub></i>, is determined as illustrated in Algorithm 1. During process (1), a parameter value x is randomly selected for each X<sub>i</sub> based on a uniform distribution. These values are then combined to compute RMSE<i><sub>tem</sub></i> in each iteration. This procedure continues until reaching M(2k+2) iterations, as outlined in equation 1.
 
@@ -81,7 +81,7 @@ rmse_sel_df
 
 #### 1.3 sorting Y and X for calibration
 
-<img src="/sequentPSS/screenshot/Algorithm2.png" alt="preprocessing (2): sorting X and Y" width="600"/>
+<img src="/sequentPSS/screenshot/Algorithm2.png" alt="preprocessing (2): sorting X and Y" width="400"/>
 
 ###### Algorithm 2 details the procedure for ordering <i>j</i> and <i>i</i> before calibration. Utilizing simulations from Algorithm 1, data generated from X to Y are used in processes (2) and (3). 
 
@@ -118,7 +118,7 @@ x_seq_df
 ```
 ![x_seq_df](/sequentPSS/screenshot/x_seq_df.png)
 
-Now we have rmse_sel, sorted y and sorted x, we can run sequential calibration.
+###### Now we have rmse_sel, sorted y and sorted x, we can run sequential calibration.
 
 
 ### 2. sequential calibration
