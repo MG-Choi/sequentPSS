@@ -15,6 +15,18 @@ sequentPSS / version 0.0.9
 ### 1. Preprocessing
 #### 1.1 set parameter and hyperparameter
 
+The SPS algorithm consists of preprocessing and sequential calibration stages, with validation being optional. In this study, \( k \) number of parameters are denoted as \( X \), while \( d \) number of outcomes are denoted as \( Y \). The mathematical representation is:
+
+$$
+X = \{X_1, X_2, \cdots X_i, \cdots, X_k\} \in \mathbb{R}^k
+$$
+
+$$
+Y = \{Y_1, Y_2, \cdots Y_j, \cdots, Y_d\} \in \mathbb{R}^d
+$$
+
+Each parameter \( X \) takes a parameter value \( x \) in the parameter space.
+
 ``` python
 import sequentPSS as sqp
 
