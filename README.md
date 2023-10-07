@@ -25,7 +25,9 @@ Y = \{Y_1, Y_2, \cdots Y_j, \cdots, Y_d\} \in \mathbb{R}^d
 $$
 
 
-<h5> Each parameter \( X \) takes a parameter value \( x \) in the parameter space. </h5>
+##### Each parameter \( X \) takes a parameter value \( x \) in the parameter space.
+<p style="font-size: 2em;"> Your text here</p>
+    
     
 #### 1.1 set parameter and hyperparameter
 
