@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'sequentPSS',
-    version = '0.0.7',
+    version = '0.0.9',
     description = "algorithm for sequential parameter searching with GSA",
     url = 'https://github.com/MG-Choi/sequentPSS',
     author = 'MoongiChoi',
@@ -10,7 +10,7 @@ setup(
     packages = find_packages(),
     package_data = {'sequentPSS': ['sampleData/concatenated_df.csv', 'sampleData/O1.txt', 'sampleData/O2.txt', 'sampleData/O3.txt']},
     include_package_data = True,
-    install_requires = ['numpy==1.24.3', 'pandas==1.5.3', 'random2==1.0.1', 'SALib==1.4.7']
+    install_requires = ['numpy', 'pandas', 'random2>=1.0.1', 'SALib>=1.4.7']
 )
 
 
@@ -27,7 +27,7 @@ note: How to make library
 
 library test는 cmd에서 한다.
 
-- pip uninstall sequentPSS
+- pip uninstall 
 - pip install sequentPSS
 
 
@@ -37,9 +37,7 @@ random이나 os와 같이 깔려있는 library의 경우 위에 install_requires
 '''
 
 
-#repository: C:\Users\MoongiChoi\Desktop\MG\양식, 코드 등\Python\Library\sequentPSS
-
-
+#repository: C:\Users\MoongiChoi\Desktop\MG\양식, 코드 등\Python\Library\indoorCont
 
 #참고:https://lsjsj92.tistory.com/592
 #https://developer-theo.tistory.com/entry/%ED%8C%8C%EC%9D%B4%EC%8D%AC-GitHub-Repository-%EC%83%9D%EC%84%B1%EB%B6%80%ED%84%B0-PyPI-Package-%EB%B0%B0%ED%8F%AC%EA%B9%8C%EC%A7%80
