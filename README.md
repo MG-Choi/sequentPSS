@@ -114,7 +114,7 @@ problem = {
                [1, 5]]
 }
 
-x_seq_df = sqp.sorting_X(problem, multi_simul_df_rmse_sel, GSA = 'RBD-FAST') # run GSA
+x_seq_df = sqp.sorting_X(problem, multi_simul_df_rmse_sel, SA = 'RBD-FAST') # run GSA
 x_seq_df
 
 ```
