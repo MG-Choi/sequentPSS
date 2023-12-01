@@ -152,9 +152,9 @@ x1_list = [1,2,3,4,5]
 x2_list = [1,2,3,4,5]
 x3_list = [1,2,3,4,5]
 
-fix_x3_y1_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x3', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x3_y1_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x3', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x3_list, result_df = seqCalibration(fix_x = 'x3', fix_y = 'y1', rmse_sel = 401.295316, simul_result_df = fix_x3_y1_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x3_list, result_df = sqp.seqCalibration(fix_x = 'x3', fix_y = 'y1', rmse_sel = 401.295316, simul_result_df = fix_x3_y1_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x3 parameter space:', x3_list)
 ```
@@ -171,9 +171,9 @@ updated x3 parameter space: [3, 4, 5]
 ```python
 # Second round of y1: fix x2
 
-fix_x2_y1_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x2', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x2_y1_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x2', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x2_list, result_df = seqCalibration(fix_x = 'x2', fix_y = 'y1', rmse_sel = 401.295316, simul_result_df = fix_x2_y1_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x2_list, result_df = sqp.seqCalibration(fix_x = 'x2', fix_y = 'y1', rmse_sel = 401.295316, simul_result_df = fix_x2_y1_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x2 parameter space:', x2_list)
 ```
@@ -187,9 +187,9 @@ updated x2 parameter space: [1, 2, 3, 4, 5]
 ```python
 # Third round of y1: fix x1
 
-fix_x1_y1_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x1', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x1_y1_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x1', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x1_list, result_df = seqCalibration(fix_x = 'x1', fix_y = 'y1', rmse_sel = 401.295316, simul_result_df = fix_x1_y1_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x1_list, result_df = sqp.seqCalibration(fix_x = 'x1', fix_y = 'y1', rmse_sel = 401.295316, simul_result_df = fix_x1_y1_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x1 parameter space:', x1_list)
 ```
@@ -204,9 +204,9 @@ updated x1 parameter space: [1, 2, 3, 4, 5]
 ```python
 # First round of y3: fix x3
 
-fix_x3_y3_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x3', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x3_y3_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x3', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x3_list, result_df = seqCalibration(fix_x = 'x3', fix_y = 'y3', rmse_sel = 3.176924, simul_result_df = fix_x3_y3_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x3_list, result_df = sqp.seqCalibration(fix_x = 'x3', fix_y = 'y3', rmse_sel = 3.176924, simul_result_df = fix_x3_y3_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x3 parameter space:', x3_list)
 ```
@@ -220,9 +220,9 @@ updated x3 parameter space: [4, 5]
 ```python
 # second round of y3: fix x2
 
-fix_x2_y3_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x2', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x2_y3_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x2', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x2_list, result_df = seqCalibration(fix_x = 'x2', fix_y = 'y3', rmse_sel = 3.176924, simul_result_df = fix_x2_y3_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x2_list, result_df = sqp.seqCalibration(fix_x = 'x2', fix_y = 'y3', rmse_sel = 3.176924, simul_result_df = fix_x2_y3_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x2 parameter space:', x2_list)
 ```
@@ -236,9 +236,9 @@ updated x2 parameter space: [1, 2, 3, 4, 5]
 ```python
 # second round of y3: fix x1
 
-fix_x1_y3_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x1', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x1_y3_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x1', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x1_list, result_df = seqCalibration(fix_x = 'x2', fix_y = 'y3', rmse_sel = 3.176924, simul_result_df = fix_x1_y3_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x1_list, result_df = sqp.seqCalibration(fix_x = 'x2', fix_y = 'y3', rmse_sel = 3.176924, simul_result_df = fix_x1_y3_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x1 parameter space:', x1_list)
 ```
@@ -253,9 +253,9 @@ updated x1 parameter space: [1, 2, 3, 4, 5]
 ```python
 # First round of y2: fix x3
 
-fix_x3_y2_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x3', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x3_y2_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x3', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x3_list, result_df = seqCalibration(fix_x = 'x3', fix_y = 'y2', rmse_sel = 50.487752, simul_result_df = fix_x3_y2_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x3_list, result_df = sqp.seqCalibration(fix_x = 'x3', fix_y = 'y2', rmse_sel = 50.487752, simul_result_df = fix_x3_y2_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x3 parameter space:', x3_list)
 ```
@@ -269,9 +269,9 @@ updated x3 parameter space: [4, 5]
 ```python
 # second round of y2: fix x2
 
-fix_x2_y2_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x2', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x2_y2_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x2', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x2_list, result_df = seqCalibration(fix_x = 'x2', fix_y = 'y2', rmse_sel = 50.487752, simul_result_df = fix_x2_y2_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x2_list, result_df = sqp.seqCalibration(fix_x = 'x2', fix_y = 'y2', rmse_sel = 50.487752, simul_result_df = fix_x2_y2_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x2 parameter space:', x2_list)
 ```
@@ -285,9 +285,9 @@ updated x2 parameter space: [1, 2, 3, 4]
 ```python
 # second round of y2: fix x1
 
-fix_x1_y2_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x1', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
+fix_x1_y2_simul_result_df = sqp.fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x = 'x1', M = 100) # fix x3: fix each x3 value one by one and run 100 times of simulation
 
-x1_list, result_df = seqCalibration(fix_x = 'x1', fix_y = 'y2', rmse_sel = 50.487752, simul_result_df = fix_x1_y2_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
+x1_list, result_df = sqp.seqCalibration(fix_x = 'x1', fix_y = 'y2', rmse_sel = 50.487752, simul_result_df = fix_x1_y2_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x1 parameter space:', x1_list)
 ```
