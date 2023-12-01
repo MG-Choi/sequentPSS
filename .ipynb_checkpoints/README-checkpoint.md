@@ -3,7 +3,7 @@ sequential parameter space search method based on global sensitivity analysis
 
 
 ## License
-sequentPSS / version 0.0.9
+sequentPSS / version 0.1.3
 - install:
 
 ```python
