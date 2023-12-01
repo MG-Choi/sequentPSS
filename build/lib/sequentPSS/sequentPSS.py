@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[6]:
+# In[1]:
 
 
 import numpy as np
 import pandas as pd
-import random
+import random2
 import os 
 
 
-# In[10]:
+# In[2]:
 
 
 from SALib.analyze import sobol
@@ -21,25 +21,25 @@ from SALib.analyze import delta
 
 # ## data
 
-# In[11]:
+# In[3]:
 
 
 # change path to relative path - only for publishing
-# current_directory = os.path.dirname(os.path.abspath(__file__))
-# os.chdir(current_directory)
+current_directory = os.path.dirname(os.path.abspath(__file__))
+os.chdir(current_directory)
 
-path = "./Data/sampleData/concatenated_df.csv"
-simul_data = pd.read_csv(path)  # sample simulation data
+path = "./sampleData/concatenated_df.csv"
+simul_data = pd.read_csv(path)
 
-oPath = "./Data/sampleData/"
+oPath = "./sampleData/"
 O1 = sorted(np.loadtxt(oPath + "O1.txt"))
 O2 = sorted(np.loadtxt(oPath + "O2.txt"))
 O3 = sorted(np.loadtxt(oPath + "O3.txt"))
 
 
-# ## Sample simulation code
+# ## simulation code
 
-# In[12]:
+# In[1]:
 
 
 def simple_Simulation(x1: 'int', x2: 'int', x3: 'int', n = 10):
@@ -108,7 +108,7 @@ def simple_Simulation(x1: 'int', x2: 'int', x3: 'int', n = 10):
     return result_df
 
 
-# In[13]:
+# In[2]:
 
 
 # run multiple simulations
@@ -161,9 +161,9 @@ def multiple_simple_simulation(x1_list, x2_list, x3_list, M = 100, k = 3):
     return result_df
 
 
-# ## 1) preprocessing (1) - Determine a criterion for calibration
+# ## 1) preprocessing (1) - Determine a criterions for calibration
 
-# In[14]:
+# In[3]:
 
 
 def prep1_criterion(O_list, multi_simul_df, u, k):
@@ -237,13 +237,11 @@ def prep1_criterion(O_list, multi_simul_df, u, k):
     
 
     return rmse_sel_df, multi_simul_df_temp
-    
-    
 
 
 # ## 2) preprocessing (2) - Sorting Y and X
 
-# In[15]:
+# In[4]:
 
 
 def sorting_Y(multi_simul_df_rmse_sel):
@@ -295,7 +293,7 @@ def sorting_Y(multi_simul_df_rmse_sel):
     return result_df
 
 
-# In[16]:
+# In[5]:
 
 
 def sorting_X(problem: dict, multi_simul_df_rmse_sel, SA='RBD-FAST'):
@@ -374,7 +372,7 @@ def sorting_X(problem: dict, multi_simul_df_rmse_sel, SA='RBD-FAST'):
 
 # ## 3) Parameter space searching and calibration
 
-# In[17]:
+# In[47]:
 
 
 def fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x: str, M = 100):
@@ -444,7 +442,7 @@ def fix_param_simple_simulation(x1_list, x2_list, x3_list, fix_x: str, M = 100):
     return result_df
 
 
-# In[56]:
+# In[6]:
 
 
 def seqCalibration(fix_x, fix_y, rmse_sel, simul_result_df, O_list, t, df_return = False): #x_index는 x 몇인지, y_index는 y 몇인지
@@ -527,9 +525,7 @@ def seqCalibration(fix_x, fix_y, rmse_sel, simul_result_df, O_list, t, df_return
 
 # # User
 
-# ### 1. run simulations
-
-# In[48]:
+# In[7]:
 
 
 # run random simulations multiple times
@@ -546,45 +542,38 @@ k = 3
 multi_simul_df = multiple_simple_simulation(x1_list, x2_list, x3_list, M, k) 
 
 
-# In[49]:
+# In[22]:
 
 
 multi_simul_df.head()
 
 
-# ### 2. preprocessing 1: determining a criterion for calibration
-
-# In[50]:
+# In[8]:
 
 
-O_list = [O1, O2, O3] # observed data to list
+# --- preprocessing 1: determining a criterion for calibration
+
+O_list = [O1, O2, O3] # observed data to list -> sqp.O1, sqp.O2, sqp.O3 를 넣어야 함.
 u = 0.1
 rmse_sel_df, multi_simul_df_rmse_sel = prep1_criterion(O_list, multi_simul_df, u, k)
 
-# now, we have the rmse_se for all O.
+# now, we have the rmse_sel for all O.
 rmse_sel_df
 
 
-# In[37]:
+# In[11]:
 
 
-multi_simul_df_rmse_sel.head()
-
-
-# ### 3. preprocessing 2: sorting Y for calibration
-
-# In[38]:
-
+# --- preprocessing 2: sorting Y for calibration
 
 y_seq_df = sorting_Y(multi_simul_df_rmse_sel)
 y_seq_df
 
 
-# ### 4. preprocessing 3: sorting X based on sensitivity analysis for calibration
-
-# In[39]:
+# In[12]:
 
 
+# --- preprocessing 3: sorting X based on sensitivity analysis for calibration
 problem = {
     'num_vars': 3,
     'names': ['p1', 'p2', 'p3'],
@@ -593,15 +582,15 @@ problem = {
                [1, 5]]
 }
 
-x_seq_df = sorting_X(problem, multi_simul_df_rmse_sel, SA = 'RBD-FAST')
+x_seq_df = sorting_X(problem, multi_simul_df_rmse_sel, GSA = 'RBD-FAST')
 x_seq_df
 
 
-# ## 5. sequential calibration: reducing parameter space
+# ## sequential calibration
 
 # - round 1 (y: y1)
 
-# In[57]:
+# In[151]:
 
 
 # -- now we need to run sequential calibration with the previous sequence of y and x (y1 -> y3 -> y2 / x3 -> x2 -> x1) --
@@ -617,7 +606,7 @@ x3_list, result_df = seqCalibration(fix_x = 'x3', fix_y = 'y1', rmse_sel = 401.2
 print('updated x3 parameter space:', x3_list)
 
 
-# In[58]:
+# In[153]:
 
 
 # Second round of y1: fix x2
@@ -629,7 +618,7 @@ x2_list, result_df = seqCalibration(fix_x = 'x2', fix_y = 'y1', rmse_sel = 401.2
 print('updated x2 parameter space:', x2_list)
 
 
-# In[59]:
+# In[154]:
 
 
 # Third round of y1: fix x1
@@ -643,7 +632,7 @@ print('updated x1 parameter space:', x1_list)
 
 # - round 2 (y: y3)
 
-# In[60]:
+# In[157]:
 
 
 # First round of y3: fix x3
@@ -655,7 +644,7 @@ x3_list, result_df = seqCalibration(fix_x = 'x3', fix_y = 'y3', rmse_sel = 3.176
 print('updated x3 parameter space:', x3_list)
 
 
-# In[61]:
+# In[160]:
 
 
 # second round of y3: fix x2
@@ -667,7 +656,7 @@ x2_list, result_df = seqCalibration(fix_x = 'x2', fix_y = 'y3', rmse_sel = 3.176
 print('updated x2 parameter space:', x2_list)
 
 
-# In[62]:
+# In[161]:
 
 
 # second round of y3: fix x1
@@ -681,7 +670,7 @@ print('updated x1 parameter space:', x1_list)
 
 # - round 3 (y: y2)
 
-# In[63]:
+# In[162]:
 
 
 # First round of y2: fix x3
@@ -693,7 +682,7 @@ x3_list, result_df = seqCalibration(fix_x = 'x3', fix_y = 'y2', rmse_sel = 50.48
 print('updated x3 parameter space:', x3_list)
 
 
-# In[64]:
+# In[163]:
 
 
 # second round of y2: fix x2
@@ -705,7 +694,7 @@ x2_list, result_df = seqCalibration(fix_x = 'x2', fix_y = 'y2', rmse_sel = 50.48
 print('updated x2 parameter space:', x2_list)
 
 
-# In[65]:
+# In[164]:
 
 
 # second round of y2: fix x1
@@ -715,4 +704,10 @@ fix_x1_y2_simul_result_df = fix_param_simple_simulation(x1_list, x2_list, x3_lis
 x1_list, result_df = seqCalibration(fix_x = 'x1', fix_y = 'y2', rmse_sel = 50.487752, simul_result_df = fix_x1_y2_simul_result_df,  O_list = O_list, t = 0.2, df_return = True)
 
 print('updated x1 parameter space:', x1_list)
+
+
+# In[ ]:
+
+
+
 
