@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'sequentPSS',
-    version = '0.0.9',
+    version = '0.1.0',
     description = "algorithm for sequential parameter searching with GSA",
     url = 'https://github.com/MG-Choi/sequentPSS',
     author = 'MoongiChoi',
