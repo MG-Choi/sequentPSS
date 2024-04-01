@@ -322,7 +322,7 @@ The calibration results are as follows:
 ---
 
 ## Related Document: 
- will be added
+ Moongi Choi, Andrew Crooks, Neng Wan, Simon Brewer, Thomas J. Cova & Alexander Hohl (2024) Addressing equifinality in agent-based modeling: a sequential parameter space search method based on sensitivity analysis, International Journal of Geographical Information Science, DOI: 10.1080/13658816.2024.2331536
 
 ## Author
 
